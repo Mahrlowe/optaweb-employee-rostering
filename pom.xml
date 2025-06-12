@@ -40,7 +40,7 @@
     </repository>
   </repositories>
 
-  <properties>
+ <properties>
     <!-- Define JaCoCo agent argLine property to avoid Surefire failure when JaCoCo is not enabled. -->
     <jacoco.agent.argLine/>
 
@@ -51,7 +51,11 @@
     <version.node>v16.2.0</version.node>
     <version.npm>7.15.1</version.npm>
     <version.org.apache.poi>4.1.2</version.org.apache.poi>
-  </properties>
+
+    <!-- Disable impsort plugin (causes build failure due to missing DirectoryScanner class) -->
+    <impsort.skip>true</impsort.skip>
+</properties>
+
 
   <modules>
     <module>optaweb-employee-rostering-frontend</module>

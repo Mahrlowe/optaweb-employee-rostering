@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
-
   <parent>
     <groupId>org.optaweb.employeerostering</groupId>
     <artifactId>optaweb-employee-rostering</artifactId>
@@ -13,6 +11,7 @@
 
   <artifactId>optaweb-employee-rostering-standalone</artifactId>
   <packaging>jar</packaging>
+
   <name>OptaWeb Employee Rostering as a Service Standalone</name>
 
   <properties>
@@ -20,6 +19,7 @@
     <frontend.project.name>optaweb-employee-rostering-frontend</frontend.project.name>
     <java.module.name>org.optaweb.employeerostering</java.module.name>
     <version.cypress.docker>9.3.1</version.cypress.docker>
+    <!-- Override to run with Podman -->
     <container.runtime>docker</container.runtime>
   </properties>
 
@@ -102,28 +102,6 @@
           </execution>
         </executions>
       </plugin>
-
-      <!-- FIX: Importsort Plugin mit plexus-utils -->
-      <plugin>
-        <groupId>net.revelc.code</groupId>
-        <artifactId>impsort-maven-plugin</artifactId>
-        <version>1.4.1</version>
-        <executions>
-          <execution>
-            <phase>process-sources</phase>
-            <goals>
-              <goal>sort</goal>
-            </goals>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-utils</artifactId>
-            <version>3.4.1</version>
-          </dependency>
-        </dependencies>
-      </plugin>
     </plugins>
   </build>
 
@@ -144,13 +122,13 @@
               <artifactId>process-exec-maven-plugin</artifactId>
               <version>0.9</version>
               <configuration>
-                <skip>${skipITs}</skip>
+              <skip>${skipITs}</skip>
               </configuration>
             </plugin>
           </plugins>
         </pluginManagement>
         <plugins>
-          <plugin>
+          <plugin> <!-- Start the application as a separate process -->
             <groupId>com.bazaarvoice.maven.plugins</groupId>
             <artifactId>process-exec-maven-plugin</artifactId>
             <executions>
@@ -173,6 +151,7 @@
                   </arguments>
                 </configuration>
               </execution>
+              <!-- Kill all running processes -->
               <execution>
                 <id>stop-running-processes</id>
                 <phase>post-integration-test</phase>
@@ -182,7 +161,8 @@
               </execution>
             </executions>
           </plugin>
-
+          <!-- Run Cypress tests in a docker container.
+                   See https://www.cypress.io/blog/2019/05/02/run-cypress-with-a-single-docker-command -->
           <plugin>
             <artifactId>exec-maven-plugin</artifactId>
             <groupId>org.codehaus.mojo</groupId>

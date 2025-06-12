@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
-
   <parent>
     <groupId>org.optaweb.employeerostering</groupId>
     <artifactId>optaweb-employee-rostering</artifactId>
@@ -13,6 +11,7 @@
 
   <artifactId>optaweb-employee-rostering-benchmark</artifactId>
   <packaging>jar</packaging>
+
   <name>OptaWeb Employee Rostering as a Service Benchmark</name>
 
   <properties>
@@ -26,7 +25,7 @@
       <artifactId>optaweb-employee-rostering-backend</artifactId>
     </dependency>
 
-    <!-- OptaPlanner -->
+    <!-- OptaPlanner dependencies -->
     <dependency>
       <groupId>org.optaplanner</groupId>
       <artifactId>optaplanner-benchmark</artifactId>
@@ -38,7 +37,7 @@
       </exclusions>
     </dependency>
 
-    <!-- Persistence -->
+    <!-- Other -->
     <dependency>
       <groupId>jakarta.persistence</groupId>
       <artifactId>jakarta.persistence-api</artifactId>
@@ -50,22 +49,25 @@
       <artifactId>slf4j-api</artifactId>
     </dependency>
 
-    <!-- Testing -->
+    <!-- Testing dependencies -->
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-junit5</artifactId>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
@@ -88,28 +90,7 @@
           </execution>
         </executions>
       </plugin>
-
-      <!-- FIX: Import-Sort Plugin mit fehlender Plexus-Abhängigkeit -->
-      <plugin>
-        <groupId>net.revelc.code</groupId>
-        <artifactId>impsort-maven-plugin</artifactId>
-        <version>1.4.1</version>
-        <executions>
-          <execution>
-            <phase>process-sources</phase>
-            <goals>
-              <goal>sort</goal>
-            </goals>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-utils</artifactId>
-            <version>3.4.1</version>
-          </dependency>
-        </dependencies>
-      </plugin>
     </plugins>
   </build>
+
 </project>
