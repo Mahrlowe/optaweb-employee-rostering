@@ -1,0 +1,21 @@
+image:
+  # Java & Node.js kombiniert
+  file: .gitpod.Dockerfile
+
+tasks:
+  - init: |
+      mvn clean install -DskipTests -DskipITs
+      cd optaweb-employee-rostering-frontend
+      npm install
+    command: |
+      # Backend starten
+      mvn quarkus:dev &
+      # Frontend starten
+      cd optaweb-employee-rostering-frontend
+      npm start
+
+ports:
+  - port: 8080
+    onOpen: open-preview
+  - port: 3000
+    onOpen: open-preview
