@@ -14,10 +14,9 @@
   <artifactId>optaweb-employee-rostering</artifactId>
   <packaging>pom</packaging>
 
-  <name>[ABANDONED] OptaWeb Employee Rostering as a Service Parent</name>
+  <name>OptaWeb Employee Rostering as a Service Parent</name>
   <description>
     OptaWeb Employee Rostering as a Service with OptaPlanner on OpenShift 4.
-    This project is no longer maintained.
   </description>
   <url>https://www.optaplanner.org</url>
   <inceptionYear>2017</inceptionYear>
@@ -40,7 +39,7 @@
     </repository>
   </repositories>
 
- <properties>
+  <properties>
     <!-- Define JaCoCo agent argLine property to avoid Surefire failure when JaCoCo is not enabled. -->
     <jacoco.agent.argLine/>
 
@@ -51,11 +50,7 @@
     <version.node>v16.2.0</version.node>
     <version.npm>7.15.1</version.npm>
     <version.org.apache.poi>4.1.2</version.org.apache.poi>
-
-    <!-- Disable impsort plugin (causes build failure due to missing DirectoryScanner class) -->
-    <impsort.skip>true</impsort.skip>
-</properties>
-
+  </properties>
 
   <modules>
     <module>optaweb-employee-rostering-frontend</module>

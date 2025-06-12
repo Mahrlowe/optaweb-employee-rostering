@@ -1,0 +1,154 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.optaweb.employeerostering</groupId>
+    <artifactId>optaweb-employee-rostering</artifactId>
+    <version>8.24.1.Final</version>
+  </parent>
+
+  <artifactId>optaweb-employee-rostering-backend</artifactId>
+  <name>OptaWeb Employee Rostering as a Service Quarkus Backend</name>
+  <description>Quarkus Backend for OptaWeb Employee Rostering as a Service</description>
+
+  <properties>
+    <java.module.name>org.optaweb.employeerostering</java.module.name>
+  </properties>
+
+  <dependencies>
+    <!-- (deine bestehenden Dependencies) -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+    <!-- … alle anderen wie gehabt … -->
+  </dependencies>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <compilerArgs>
+              <arg>-Xlint:all</arg>
+              <arg>-Xlint:-processing</arg>
+              <arg>-Xlint:-serial</arg>
+            </compilerArgs>
+          </configuration>
+        </plugin>
+        <!-- Dein Pitest-Plugin bleibt unverändert -->
+        <plugin>
+          <groupId>org.pitest</groupId>
+          <artifactId>pitest-maven</artifactId>
+          <version>1.4.10</version>
+          <configuration>
+            <reportsDirectory>local/pit-reports</reportsDirectory>
+            <timestampedReports>true</timestampedReports>
+            <threads>2</threads>
+            <mutators>
+              <mutator>DEFAULTS</mutator>
+              <mutator>NON_VOID_METHOD_CALLS</mutator>
+              <mutator>REMOVE_CONDITIONALS</mutator>
+            </mutators>
+            <avoidCallsTo>
+              <avoidCallsTo>java.lang.StringBuilder</avoidCallsTo>
+              <avoidCallsTo>org.slf4j</avoidCallsTo>
+            </avoidCallsTo>
+            <excludedClasses>
+              <excludedClass>*Config</excludedClass>
+              <excludedClass>*Properties</excludedClass>
+            </excludedClasses>
+            <excludedMethods>hashCode</excludedMethods>
+            <excludedTestClasses>
+              <param>*IntegrationTest</param>
+            </excludedTestClasses>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <!-- Quarkus Maven Plugin -->
+      <plugin>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-maven-plugin</artifactId>
+        <version>${version.io.quarkus}</version>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <goals>
+              <goal>build</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Surefire für Tests -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <systemPropertyVariables>
+            <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+            <maven.home>${maven.home}</maven.home>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+
+      <!-- impsort: jetzt mit Skip-Option -->
+      <plugin>
+        <groupId>net.revelc.code</groupId>
+        <artifactId>impsort-maven-plugin</artifactId>
+        <version>1.4.1</version>
+        <configuration>
+          <!-- Skip import sorting to avoid NPE -->
+          <skip>true</skip>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>process-sources</phase>
+            <goals>
+              <goal>sort</goal>
+            </goals>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-utils</artifactId>
+            <version>3.4.1</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>mutationCoverage</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.pitest</groupId>
+            <artifactId>pitest-maven</artifactId>
+            <executions>
+              <execution>
+                <id>default-pitest</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>mutationCoverage</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+</project>
